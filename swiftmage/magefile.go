@@ -15,8 +15,8 @@ import (
 // var Default = Build
 
 var (
-	xcb = NewXCodeBuild()
-	xcw = NewXCodeBuildWithWorkspace(Workspace, Scheme)
+	xCodeBuild          = NewXCodeBuild()
+	xCodeBuildWorkspace = NewXCodeBuildWithWorkspace(Workspace, Scheme)
 )
 
 // Install all the dependencies
@@ -63,7 +63,8 @@ func Archive() {
 		return
 	}
 	Log("Archiving...")
-	xcw.Archive(SDKIPhone, PathArchive)
+	xcw := xCodeBuildWorkspace
+	xcw.Archive("iphoneos", PathArchive)
 }
 
 //Create the .ipa with xcodebuild -exportArchive
@@ -75,6 +76,7 @@ func ExportArchive() {
 		return
 	}
 	Log("Exporting IPA...")
+	xcb := xCodeBuild
 	xcb.ExportArchive(PathArchive, PathExport, PathExportOptions)
 }
 
@@ -90,6 +92,7 @@ func Testflight() {
 // Clean XCode build folder
 func Clean() {
 	Log("Cleaning...")
+	xcb := xCodeBuild
 	xcb.Clean()
 }
 
@@ -124,6 +127,7 @@ func PodLint() {
 	Run("pod lib lint --verbose --allow-warnings")
 }
 
+// Push pod to cocoapods trunk --Cocoapods Only--
 func PodPush() {
 	Run("pod trunk push")
 }

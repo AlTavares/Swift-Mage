@@ -12,9 +12,14 @@ import (
 
 const arrow = "➜ "
 
+var DryRun = false
+
 func Run(command ...string) {
 	c := strings.Join(command, " ")
 	LogColor(color.FgHiGreen, c)
+	if IsDryRun() {
+		return
+	}
 	cmd := exec.Command("sh", "-c", c)
 	cmd.Stdout = os.Stdout
 	var errorBuffer bytes.Buffer
@@ -60,4 +65,8 @@ func LogColor(c color.Attribute, a ...interface{}) {
 	msg := append([]interface{}{arrow}, a...)
 	fmt.Println(msg...)
 	color.Unset()
+}
+
+func IsDryRun() bool {
+	return DryRun || strings.EqualFold(os.Getenv("dryrun"), "true")
 }

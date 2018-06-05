@@ -1,9 +1,7 @@
 package mage
 
 import (
-	"bytes"
 	"fmt"
-	"io/ioutil"
 	"os"
 )
 
@@ -40,12 +38,4 @@ func SetupItunes() (user string, password string) {
 		}
 	}
 	return
-}
-
-func ReplaceTextInFile(path string, old string, new string) {
-	input, err := ioutil.ReadFile(path)
-	Check(err)
-	output := bytes.Replace(input, []byte(old), []byte(new), -1)
-	err = ioutil.WriteFile(path, output, 0666)
-	Check(err)
 }

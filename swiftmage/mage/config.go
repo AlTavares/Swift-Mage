@@ -7,17 +7,12 @@ var (
 	Workspace = Name + ".xcworkspace"
 	Scheme    = Name
 
-	FrameworkIOSScheme     = Name + "-iOS"
-	FrameworkMacOSScheme   = Name + "-macOS"
-	FrameworkTVOSScheme    = Name + "-tvOS"
-	FrameworkWatchOSScheme = Name + "-watchOS"
+	SchemeIOS     = Name + "-iOS"
+	SchemeMacOS   = Name + "-macOS"
+	SchemeTVOS    = Name + "-tvOS"
+	SchemeWatchOS = Name + "-watchOS"
 
-	PlatformSelected = PlatformAll
-	PlatformAll      = Platform("all")
-	PlatformIOS      = Platform("iOS")
-	PlatformMacOS    = Platform("macOS")
-	PlatformTVOS     = Platform("tvOS")
-	PlatformWatchOS  = Platform("watchOS")
+	PlatformSelected = "all"
 
 	PathSources       = "./Sources"
 	PathExport        = "./build/"

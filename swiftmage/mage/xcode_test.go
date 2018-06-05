@@ -27,32 +27,29 @@ func TestXCodeBuild_ExportArchive(t *testing.T) {
 
 func TestXCodeBuild_Build(t *testing.T) {
 	xc := XCodeBuild{}
-	xc.Build(DestinationForSimulator("1.0", "destinationtest"), "configurationtest")
+	xc.Destination(DestinationForSimulator("1.0", "destinationtest")).
+		Build("configurationtest")
 	cmd := xc.BuildCommand()
 	expected := "xcodebuild -destination 'OS=1.0,name=destinationtest' -configuration configurationtest ONLY_ACTIVE_ARCH=NO build"
 	assertEqual(t, cmd, expected)
 }
 
-func TestXCodeBuild_BuildForTesting(t *testing.T) {
+func TestXCodeBuild_Test(t *testing.T) {
 	xc := XCodeBuild{}
-	xc.BuildForTesting(DestinationGeneric(PlatformIOS))
+	xc.Destination(DestinationForMac()).
+		Test("configurationtest")
 	cmd := xc.BuildCommand()
-	expected := "xcodebuild -destination 'generic/platform=iOS' ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES build-for-testing"
-	assertEqual(t, cmd, expected)
-}
-func TestXCodeBuild_TestWithoutBuilding(t *testing.T) {
-	xc := XCodeBuild{}
-	xc.Test(DestinationForSimulator("1.0", "destinationtest"), "configurationtest", false)
-	cmd := xc.BuildCommand()
-	expected := "xcodebuild -destination 'OS=1.0,name=destinationtest' -configuration configurationtest ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES test-without-building"
+	expected := "xcodebuild -destination 'arch=x86_64' -configuration configurationtest ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES test"
 	assertEqual(t, cmd, expected)
 }
 
-func TestXCodeBuild_TestBuilding(t *testing.T) {
+func TestXCodeBuild_TestMoreDestination(t *testing.T) {
 	xc := XCodeBuild{}
-	xc.Test(DestinationForMac(), "configurationtest", true)
+	xc.Destination(DestinationForMac()).
+		Destination(DestinationForSimulator("1.0", "iPhone")).
+		Test("configurationtest")
 	cmd := xc.BuildCommand()
-	expected := "xcodebuild -destination 'arch=x86_64' -configuration configurationtest ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES test"
+	expected := "xcodebuild -destination 'arch=x86_64' -destination 'OS=1.0,name=iPhone' -configuration configurationtest ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES test"
 	assertEqual(t, cmd, expected)
 }
 

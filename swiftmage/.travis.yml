@@ -1,5 +1,5 @@
 language: objective-c
-osx_image: xcode9.4
+osx_image: xcode9.3
 cache:
   directories:
   - $HOME/Library/Caches/org.carthage.CarthageKit/dependencies
@@ -39,11 +39,11 @@ jobs:
           api_key:
             secure: githubkey
           file:
-            - Nappa.framework.zip
+            - Name.framework.zip
           skip_cleanup: true
           overwrite: true
           on:
-            repo: AlTavares/Nappa
+            repo: Repo/Name
             tags: true
 
     - stage: Deploy Cocoapods

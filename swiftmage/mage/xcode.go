@@ -53,36 +53,20 @@ func (xc *XCodeBuild) ExportArchive(archivePath string, exportPath string, expor
 }
 
 //Build target
-func (xc *XCodeBuild) Build(destination Destination, configuration string) {
-	xc.Destination(destination).
-		Configuration(configuration).
+func (xc *XCodeBuild) Build(configuration string) {
+	xc.Configuration(configuration).
 		DisableOnlyActiveArch().
 		Action("build").
 		Run()
 }
 
-//Build target for testing
-func (xc *XCodeBuild) BuildForTesting(destination Destination) {
-	xc.Destination(destination).
+// test target
+func (xc *XCodeBuild) Test(configuration string) {
+	xc.Configuration(configuration).
 		DisableOnlyActiveArch().
 		EnableTestability().
-		Action("build-for-testing").
+		Action("test").
 		Run()
-}
-
-// test target
-// destination example: "'OS="+osVersion+",name="+simulator+"'"
-func (xc *XCodeBuild) Test(destination Destination, configuration string, build bool) {
-	xc.Destination(destination).
-		Configuration(configuration).
-		DisableOnlyActiveArch().
-		EnableTestability()
-	if build {
-		xc.Action("test")
-	} else {
-		xc.Action("test-without-building")
-	}
-	xc.Run()
 }
 
 func (xc *XCodeBuild) Clean() {

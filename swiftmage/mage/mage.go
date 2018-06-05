@@ -52,7 +52,7 @@ func InitEnvironment() {
 	Log("Initializing environment...")
 	platform := os.Getenv("platform")
 	if platform != "" {
-		PlatformSelected = Platform(platform)
+		PlatformSelected = platform
 	}
 }
 

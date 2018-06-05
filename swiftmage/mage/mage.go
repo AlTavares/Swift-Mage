@@ -42,9 +42,7 @@ func RunAt(path string, command ...string) {
 
 func Check(e error) {
 	if e != nil {
-		color.Set(color.FgHiRed)
-		fmt.Print(arrow, " ")
-		panic(color.HiRedString(e.Error()))
+		Error(e)
 	}
 }
 
@@ -65,6 +63,12 @@ func LogColor(c color.Attribute, a ...interface{}) {
 	msg := append([]interface{}{arrow}, a...)
 	fmt.Println(msg...)
 	color.Unset()
+}
+
+func Error(e error) {
+	color.Set(color.FgHiRed)
+	fmt.Print(arrow, " ")
+	panic(color.HiRedString(e.Error()))
 }
 
 func IsDryRun() bool {

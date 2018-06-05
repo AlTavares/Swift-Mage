@@ -3,6 +3,7 @@ package mage
 import (
 	"fmt"
 	"os"
+	"os/exec"
 )
 
 func IsCarthage() bool {
@@ -38,4 +39,9 @@ func SetupItunes() (user string, password string) {
 		}
 	}
 	return
+}
+
+func IsGitTreeClean() bool {
+	cmd := exec.Command("git", "diff --quiet")
+	return cmd.Run() == nil
 }

@@ -3,6 +3,10 @@
 package main
 
 import (
+	"errors"
+	"fmt"
+	"os"
+
 	"github.com/magefile/mage/target"
 
 	"github.com/magefile/mage/mg"
@@ -133,3 +137,23 @@ func PodPush() {
 }
 
 //#endregion
+
+func Release() {
+	Log("Releasing...")
+	tag := os.Getenv("tag")
+	if tag == "" {
+		Error(errors.New("Tag not defined"))
+		return
+	}
+	if !IsGitTreeClean() {
+		Error(errors.New("Please commit all your changes before running a release"))
+		return
+	}
+	SetVersion(tag)
+	UpdatePodspecVersion(tag)
+	Run("git add .")
+	Run(fmt.Sprintf("git commit -m 'Update project to version %s'", tag))
+	Run("git tag", tag)
+	Run("git push")
+	Run("git push origin", tag)
+}

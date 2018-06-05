@@ -24,7 +24,7 @@ func Bootstrap() {
 	mg.Deps(InitEnvironment)
 	Log("Bootstraping...")
 	if IsCarthage() {
-		Run("carthage bootstrap --no-use-binaries  --configuration Debug --cache-builds --platform", PlatformSelected)
+		Run("carthage bootstrap --no-use-binaries  --configuration Debug --cache-builds --platform", string(PlatformSelected))
 	}
 	if IsCocoapods() {
 		Run("pod repo update")
@@ -37,7 +37,7 @@ func Update() {
 	mg.Deps(InitEnvironment)
 	Log("Updating...")
 	if IsCarthage() {
-		Run("carthage update --no-use-binaries  --configuration Debug --cache-builds --platform", PlatformSelected)
+		Run("carthage update --no-use-binaries  --configuration Debug --cache-builds --platform", string(PlatformSelected))
 	}
 	if IsCocoapods() {
 		Run("pod update")
@@ -109,7 +109,7 @@ func BuildFramework() {
 	Clean()
 	Bootstrap()
 	Log("Building...")
-	Run("carthage build --no-skip-current --cache-builds --platform %s", PlatformSelected)
+	Run("carthage build --no-skip-current --cache-builds --platform %s", string(PlatformSelected))
 }
 
 // Archive framework --Carthage Only--

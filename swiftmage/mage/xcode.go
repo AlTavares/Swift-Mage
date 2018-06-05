@@ -10,15 +10,17 @@ type XCodeBuild struct {
 	args   []string
 }
 
-func NewXCodeBuild() *XCodeBuild {
+func NewXCodeBuild() XCodeBuild {
 	xc := XCodeBuild{}
-	return xc.Pretty()
+	xc.Pretty()
+	return xc
 }
 
-func NewXCodeBuildWithWorkspace(workspace string, scheme string) *XCodeBuild {
-	return NewXCodeBuild().
-		Workspace(workspace).
+func NewXCodeBuildWithWorkspace(workspace string, scheme string) XCodeBuild {
+	xc := NewXCodeBuild()
+	xc.Workspace(workspace).
 		Scheme(scheme)
+	return xc
 }
 
 func (xc XCodeBuild) Run() {

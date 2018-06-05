@@ -1,5 +1,7 @@
 package mage
 
+type Platform string
+
 var (
 	Name      = "MyProject"
 	Workspace = Name + ".xcworkspace"
@@ -10,12 +12,12 @@ var (
 	FrameworkTVOSScheme    = Name + "-tvOS"
 	FrameworkWatchOSScheme = Name + "-watchOS"
 
-	PlatformSelected string
-	PlatformAll      = "all"
-	PlatformIOS      = "iOS"
-	PlatformMacOS    = "macOS"
-	PlatformTVOS     = "tvOS"
-	PlatformWatchOS  = "watchOS"
+	PlatformSelected = PlatformAll
+	PlatformAll      = Platform("all")
+	PlatformIOS      = Platform("iOS")
+	PlatformMacOS    = Platform("macOS")
+	PlatformTVOS     = Platform("tvOS")
+	PlatformWatchOS  = Platform("watchOS")
 
 	PathSources       = "./Sources"
 	PathExport        = "./build/"

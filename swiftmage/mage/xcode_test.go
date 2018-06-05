@@ -10,7 +10,7 @@ func init() {
 }
 
 func TestXCodeBuild_Archive(t *testing.T) {
-	xc := &XCodeBuild{}
+	xc := XCodeBuild{}
 	xc.Archive("sdktest", "pathtest")
 	cmd := xc.BuildCommand()
 	expected := "xcodebuild -sdk sdktest -archivePath pathtest -configuration Release archive"
@@ -18,7 +18,7 @@ func TestXCodeBuild_Archive(t *testing.T) {
 }
 
 func TestXCodeBuild_ExportArchive(t *testing.T) {
-	xc := &XCodeBuild{}
+	xc := XCodeBuild{}
 	xc.ExportArchive("archivepathtest", "exportpathtest", "exportoptionspathtest")
 	cmd := xc.BuildCommand()
 	expected := "xcodebuild -archivePath archivepathtest -exportPath exportpathtest -exportOptionsPlist exportoptionspathtest -allowProvisioningUpdates -exportArchive"
@@ -26,7 +26,7 @@ func TestXCodeBuild_ExportArchive(t *testing.T) {
 }
 
 func TestXCodeBuild_Build(t *testing.T) {
-	xc := &XCodeBuild{}
+	xc := XCodeBuild{}
 	xc.Build(DestinationForSimulator("1.0", "destinationtest"), "configurationtest")
 	cmd := xc.BuildCommand()
 	expected := "xcodebuild -destination 'OS=1.0,name=destinationtest' -configuration configurationtest ONLY_ACTIVE_ARCH=NO build"
@@ -34,14 +34,14 @@ func TestXCodeBuild_Build(t *testing.T) {
 }
 
 func TestXCodeBuild_BuildForTesting(t *testing.T) {
-	xc := &XCodeBuild{}
-	xc.BuildForTesting(DestinationGeneric("testplatform"))
+	xc := XCodeBuild{}
+	xc.BuildForTesting(DestinationGeneric(PlatformIOS))
 	cmd := xc.BuildCommand()
-	expected := "xcodebuild -destination 'generic/platform=testplatform' ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES build-for-testing"
+	expected := "xcodebuild -destination 'generic/platform=iOS' ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES build-for-testing"
 	assertEqual(t, cmd, expected)
 }
 func TestXCodeBuild_TestWithoutBuilding(t *testing.T) {
-	xc := &XCodeBuild{}
+	xc := XCodeBuild{}
 	xc.Test(DestinationForSimulator("1.0", "destinationtest"), "configurationtest", false)
 	cmd := xc.BuildCommand()
 	expected := "xcodebuild -destination 'OS=1.0,name=destinationtest' -configuration configurationtest ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES test-without-building"
@@ -49,7 +49,7 @@ func TestXCodeBuild_TestWithoutBuilding(t *testing.T) {
 }
 
 func TestXCodeBuild_TestBuilding(t *testing.T) {
-	xc := &XCodeBuild{}
+	xc := XCodeBuild{}
 	xc.Test(DestinationForMac(), "configurationtest", true)
 	cmd := xc.BuildCommand()
 	expected := "xcodebuild -destination 'arch=x86_64' -configuration configurationtest ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES test"
@@ -57,7 +57,7 @@ func TestXCodeBuild_TestBuilding(t *testing.T) {
 }
 
 func TestXCodeBuild_Clean(t *testing.T) {
-	xc := &XCodeBuild{}
+	xc := XCodeBuild{}
 	xc.Clean()
 	cmd := xc.BuildCommand()
 	expected := "xcodebuild clean -alltargets"
@@ -65,7 +65,7 @@ func TestXCodeBuild_Clean(t *testing.T) {
 }
 
 func TestXCodeBuild_Pretty(t *testing.T) {
-	xc := &XCodeBuild{}
+	xc := XCodeBuild{}
 	xc.Pretty().Action("someaction")
 	cmd := xc.BuildCommand()
 	expected := "set -o pipefail && xcodebuild someaction | xcpretty -c"
@@ -73,7 +73,7 @@ func TestXCodeBuild_Pretty(t *testing.T) {
 }
 
 func TestXCodeBuild_RandomArgs(t *testing.T) {
-	xc := &XCodeBuild{}
+	xc := XCodeBuild{}
 	xc.AddKVArgument("-keyarg", "valuearg").
 		AddArgument("anotherargument")
 	cmd := xc.BuildCommand()

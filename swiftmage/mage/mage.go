@@ -50,9 +50,9 @@ func Check(e error) {
 
 func InitEnvironment() {
 	Log("Initializing environment...")
-	PlatformSelected = os.Getenv("platform")
-	if PlatformSelected == "" {
-		PlatformSelected = PlatformAll
+	platform := os.Getenv("platform")
+	if platform != "" {
+		PlatformSelected = Platform(platform)
 	}
 }
 

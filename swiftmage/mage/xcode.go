@@ -33,15 +33,6 @@ func (xc XCodeBuild) BuildCommand() string {
 	return cmd
 }
 
-//Build target for testing
-func (xc *XCodeBuild) BuildForTesting(platform string) {
-	xc.Destination("generic/platform=" + platform).
-		DisableOnlyActiveArch().
-		EnableTestability().
-		Action("build-for-testing").
-		Run()
-}
-
 func (xc *XCodeBuild) Archive(sdk string, path string) {
 	xc.AddKVArgument("-sdk", sdk).
 		AddKVArgument("-archivePath", path).
@@ -59,10 +50,31 @@ func (xc *XCodeBuild) ExportArchive(archivePath string, exportPath string, expor
 		Run()
 }
 
-// "'OS="+osVersion+",name="+simulator+"'"
-func (xc *XCodeBuild) Test(destination string, configuration string, build bool) {
+//Build target
+func (xc *XCodeBuild) Build(destination Destination, configuration string) {
 	xc.Destination(destination).
-		Configuration(configuration)
+		Configuration(configuration).
+		DisableOnlyActiveArch().
+		Action("build").
+		Run()
+}
+
+//Build target for testing
+func (xc *XCodeBuild) BuildForTesting(destination Destination) {
+	xc.Destination(destination).
+		DisableOnlyActiveArch().
+		EnableTestability().
+		Action("build-for-testing").
+		Run()
+}
+
+// test target
+// destination example: "'OS="+osVersion+",name="+simulator+"'"
+func (xc *XCodeBuild) Test(destination Destination, configuration string, build bool) {
+	xc.Destination(destination).
+		Configuration(configuration).
+		DisableOnlyActiveArch().
+		EnableTestability()
 	if build {
 		xc.Action("test")
 	} else {
@@ -98,10 +110,8 @@ func (xc *XCodeBuild) Scheme(value string) *XCodeBuild {
 	}
 	return xc
 }
-func (xc *XCodeBuild) Destination(value string) *XCodeBuild {
-	if value != "" {
-		xc.AddKVArgument("-destination", value)
-	}
+func (xc *XCodeBuild) Destination(value Destination) *XCodeBuild {
+	xc.AddKVArgument("-destination", value.String())
 	return xc
 }
 func (xc *XCodeBuild) Configuration(value string) *XCodeBuild {

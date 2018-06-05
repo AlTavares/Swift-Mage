@@ -9,14 +9,6 @@ func init() {
 	DryRun = true
 }
 
-func TestXCodeBuild_BuildForTesting(t *testing.T) {
-	xc := &XCodeBuild{}
-	xc.BuildForTesting("testplatform")
-	cmd := xc.BuildCommand()
-	expected := "xcodebuild -destination generic/platform=testplatform ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES build-for-testing"
-	assertEqual(t, cmd, expected)
-}
-
 func TestXCodeBuild_Archive(t *testing.T) {
 	xc := &XCodeBuild{}
 	xc.Archive("sdktest", "pathtest")
@@ -33,19 +25,34 @@ func TestXCodeBuild_ExportArchive(t *testing.T) {
 	assertEqual(t, cmd, expected)
 }
 
+func TestXCodeBuild_Build(t *testing.T) {
+	xc := &XCodeBuild{}
+	xc.Build(DestinationForSimulator("1.0", "destinationtest"), "configurationtest")
+	cmd := xc.BuildCommand()
+	expected := "xcodebuild -destination 'OS=1.0,name=destinationtest' -configuration configurationtest ONLY_ACTIVE_ARCH=NO build"
+	assertEqual(t, cmd, expected)
+}
+
+func TestXCodeBuild_BuildForTesting(t *testing.T) {
+	xc := &XCodeBuild{}
+	xc.BuildForTesting(DestinationGeneric("testplatform"))
+	cmd := xc.BuildCommand()
+	expected := "xcodebuild -destination 'generic/platform=testplatform' ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES build-for-testing"
+	assertEqual(t, cmd, expected)
+}
 func TestXCodeBuild_TestWithoutBuilding(t *testing.T) {
 	xc := &XCodeBuild{}
-	xc.Test("destinationtest", "configurationtest", false)
+	xc.Test(DestinationForSimulator("1.0", "destinationtest"), "configurationtest", false)
 	cmd := xc.BuildCommand()
-	expected := "xcodebuild -destination destinationtest -configuration configurationtest test-without-building"
+	expected := "xcodebuild -destination 'OS=1.0,name=destinationtest' -configuration configurationtest ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES test-without-building"
 	assertEqual(t, cmd, expected)
 }
 
 func TestXCodeBuild_TestBuilding(t *testing.T) {
 	xc := &XCodeBuild{}
-	xc.Test("destinationtest", "configurationtest", true)
+	xc.Test(DestinationForMac(), "configurationtest", true)
 	cmd := xc.BuildCommand()
-	expected := "xcodebuild -destination destinationtest -configuration configurationtest test"
+	expected := "xcodebuild -destination 'arch=x86_64' -configuration configurationtest ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES test"
 	assertEqual(t, cmd, expected)
 }
 
@@ -76,8 +83,10 @@ func TestXCodeBuild_RandomArgs(t *testing.T) {
 
 func assertEqual(t *testing.T, cmd string, expected string) {
 	if cmd != expected {
+		fmt.Println()
 		fmt.Println("Expected:", expected)
-		fmt.Println("Gotten:", cmd)
+		fmt.Println("Gotten:  ", cmd)
+		fmt.Println()
 		t.Fail()
 	}
 }

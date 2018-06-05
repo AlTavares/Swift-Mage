@@ -16,8 +16,8 @@ func DestinationForSimulator(osVersion string, simulator string) Destination {
 	return Destination{fmt.Sprintf("'OS=%s,name=%s'", osVersion, simulator)}
 }
 
-func DestinationGeneric(platform Platform) Destination {
-	return Destination{fmt.Sprintf("'generic/platform=%s'", string(platform))}
+func DestinationGeneric(platform string) Destination {
+	return Destination{fmt.Sprintf("'generic/platform=%s'", platform)}
 }
 
 func (d Destination) String() string {

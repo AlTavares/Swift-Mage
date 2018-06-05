@@ -1,7 +1,5 @@
 package mage
 
-type Platform string
-
 var (
 	Name      = "MyProject"
 	Workspace = Name + ".xcworkspace"

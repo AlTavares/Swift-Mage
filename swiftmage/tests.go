@@ -82,7 +82,6 @@ func buildWatchOS(configuration string) {
 }
 
 func test(scheme string, destinations []xcode.Destination, configuration string) {
-	Clean()
 	xcw := xcode.NewXCodeBuildWithWorkspace(Workspace, scheme)
 	for _, destination := range destinations {
 		xcw.Destination(destination)

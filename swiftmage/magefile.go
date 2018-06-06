@@ -163,8 +163,7 @@ func Release() {
 	}
 	xcodeproject.SetVersion(tag)
 	xcodeproject.UpdatePodspecVersion(Name+".podspec", tag)
-	sh.Run("git add .")
-	sh.Run(fmt.Sprintf("git commit -m 'Update project to version %s'", tag))
+	sh.Run(fmt.Sprintf("git commit -a -m 'Update project to version %s'", tag))
 	sh.Run("git tag", tag)
 	sh.Run("git push")
 	sh.Run("git push origin", tag)

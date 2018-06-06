@@ -161,7 +161,9 @@ func Release() {
 		logger.Error(errors.New("Please commit all your changes before running a release"))
 		return
 	}
+	logger.Log("Setting version to", tag)
 	xcodeproject.SetVersion(tag)
+	logger.Log("Updating podspec")
 	xcodeproject.UpdatePodspecVersion(Name+".podspec", tag)
 	sh.Run(fmt.Sprintf("git commit -a -m 'Update project to version %s'", tag))
 	sh.Run("git tag", tag)

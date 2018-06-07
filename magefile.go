@@ -181,6 +181,7 @@ func Compile() {
 		return
 	}
 	logger.Log("Updating binary...")
+	sh.Run("mage --clean")
 	sh.Run("mage -compile swiftmage")
 }
 
@@ -208,7 +209,7 @@ func setupItunes() (user string, password string) {
 
 func SelfUpdate() {
 	sh.Run("git clone https://github.com/AlTavares/Swift-Mage")
-	sh.Run("cp Swift-Mage/*.go .")
+	sh.Run("cp Swift-Mage/magefile.go .")
 	sh.Run("cp Swift-Mage/install.sh .")
 	sh.Check(os.RemoveAll("Swift-Mage"))
 }

@@ -125,7 +125,7 @@ func BuildFramework() {
 	Clean()
 	Bootstrap()
 	logger.Log("Building...")
-	sh.Run("carthage build --no-skip-current --cache-builds --platform %s", PlatformSelected)
+	sh.Run("carthage build --no-skip-current --cache-builds --platform", PlatformSelected)
 }
 
 // Archive framework --Carthage Only--

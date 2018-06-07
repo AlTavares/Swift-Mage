@@ -207,9 +207,20 @@ func setupItunes() (user string, password string) {
 	return
 }
 
-func SelfUpdate() {
+func UpdateSelf() {
+	update("magefile.go")
+}
+
+func UpdateTests() {
+	update("tests.go")
+}
+
+func update(files ...string) {
 	sh.Run("git clone https://github.com/AlTavares/Swift-Mage")
-	sh.Run("cp Swift-Mage/magefile.go .")
+	for _, file := range files {
+		sh.Run(fmt.Sprintf("cp Swift-Mage/%s .", file))
+	}
 	sh.Run("cp Swift-Mage/install.sh .")
 	sh.Check(os.RemoveAll("Swift-Mage"))
+	sh.Run("sh install.sh")
 }

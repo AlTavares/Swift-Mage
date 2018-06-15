@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/AlTavares/go/xcodeproject"
 
@@ -176,7 +177,9 @@ func Release() {
 }
 
 func Compile() {
-	modified, err := target.Path("swiftmage", "magefile.go", "tests.go")
+	files, err := filepath.Glob("mage*.go")
+	sh.Check(err)
+	modified, err := target.Path("swiftmage", files...)
 	if !modified && err == nil {
 		return
 	}

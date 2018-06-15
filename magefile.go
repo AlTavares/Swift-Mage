@@ -83,7 +83,7 @@ func Archive() {
 		return
 	}
 	logger.Log("Archiving...")
-	xcw := xCodeBuildWorkspace
+	xcw := xcode.NewXCodeBuildWithWorkspace(Workspace, SchemeTestflight)
 	xcw.Archive("iphoneos", PathArchive)
 }
 

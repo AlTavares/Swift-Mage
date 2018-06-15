@@ -3,9 +3,10 @@
 package main
 
 var (
-	Name      = "MyProject"
-	Workspace = Name + ".xcworkspace"
-	Scheme    = Name
+	Name             = "MyProject"
+	Workspace        = Name + ".xcworkspace"
+	Scheme           = Name
+	SchemeTestflight = Name
 
 	SchemeIOS     = Name + "-iOS"
 	SchemeMacOS   = Name + "-macOS"

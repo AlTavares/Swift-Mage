@@ -84,6 +84,7 @@ func Archive() {
 		return
 	}
 	logger.Log("Archiving...")
+	xcodeproject.IncrementBuildNumber()
 	xcw := xcode.NewXCodeBuildWithWorkspace(Workspace, SchemeTestflight)
 	xcw.Archive("iphoneos", PathArchive)
 }
@@ -168,6 +169,7 @@ func Release() {
 	}
 	logger.Log("Setting version to", tag)
 	xcodeproject.SetVersion(tag)
+	xcodeproject.SetBuild("0")
 	logger.Log("Updating podspec")
 	xcodeproject.UpdatePodspecVersion(Name+".podspec", tag)
 	sh.Run(fmt.Sprintf("git commit -a -m 'Update project to version %s'", tag))

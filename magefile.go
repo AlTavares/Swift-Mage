@@ -217,7 +217,7 @@ func UpdateSelf() {
 }
 
 func UpdateTests() {
-	update("tests.go")
+	update("magetests.go")
 }
 
 func update(files ...string) {
